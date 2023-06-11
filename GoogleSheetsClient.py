@@ -142,6 +142,16 @@ class GoogleSheetsClient:
                 print('Too many requests. Please try again later.')
             else:
                 raise
+                
+      def check_for_spreadsheet_updates(self, spreadsheet_id, last_checked_time):
+            service = self.create_service()
+            spreadsheet = self.get_spreadsheet(spreadsheet_id)
+            current_modified_time = spreadsheet['properties']['modifiedTime']
+
+            if last_checked_time is None or current_modified_time > last_checked_time:
+                return True  # Spreadsheet has been changed
+            else:
+                return False  # No changes since last check
 
 # Example usage
 client = GoogleSheetsClient('credentials.json')
